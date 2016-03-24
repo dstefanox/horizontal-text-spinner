@@ -1,0 +1,29 @@
+{
+  "name": "horizontal-text-spinner",
+  "version": "1.0.1",
+  "authors": [
+    "Dejan Stefanovic <dstefanox@gmail.com>"
+  ],
+  "description": "An element that allows us to slide-in text from the left or from the right, where previous text slides-out on the other side.",
+  "keywords": [
+    "web-component",
+    "polymer",
+    "horizontal text spinner",
+    "horizontal text translation",
+    "text scroll",
+    "horizontal text scroll"
+  ],
+  "main": "horizontal-text-spinner.html",
+  "license": "http://polymer.github.io/LICENSE.txt",
+  "homepage": "https://github.com/dstefanox/horizontal-text-spinner/",
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0",
+    "neon-animation": "PolymerElements/neon-animation#^1.1.0",
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^1.1.0"
+  },
+  "devDependencies": {
+    "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
+    "web-component-tester": "^4.0.0",
+    "iron-test-helpers": "PolymerElements/iron-test-helpers#^1.1.5"    
+  }
+}

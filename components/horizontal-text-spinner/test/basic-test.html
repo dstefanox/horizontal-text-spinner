@@ -1,0 +1,118 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <!-- Step 1: import the element to test -->
+    <link rel="import" href="../horizontal-text-spinner.html">
+    <script src="../../iron-test-helpers/mock-interactions.js"></script>    
+  </head>
+  <body>
+
+    <!-- You can use the document as a place to set up your fixtures. -->
+    <test-fixture id="fixture-1">
+      <template>
+        <horizontal-text-spinner class="spstyle" content="initial content"></horizontal-text-spinner>
+      </template>
+    </test-fixture>
+
+    <script>
+      suite('<horizontal-text-spinner>', function() {
+
+        var myEl;
+
+        setup(function() {
+          myEl = fixture('fixture-1');
+        });
+
+        test('checks if initial content is properly set', function() {
+          assert.equal(myEl.getText(), 'initial content');
+        });
+
+        test('spins left and checks if text is properly set', function(done) {
+          myEl.spinLeft("Left content");
+          setTimeout(function() {
+            assert.equal(myEl.getText(), 'Left content');
+            done();
+          }, 600);
+        });
+        
+        test('spins right and checks if text is properly set', function(done) {
+          myEl.spinRight("Right content");
+          setTimeout(function() {
+            assert.equal(myEl.getText(), 'Right content');
+            done();
+          }, 600);
+        });
+
+        test("spins left and waits for 'spin-complete' event to be fired", function(done) {
+
+          myEl.addEventListener('spin-complete', function(event) {
+            assert.equal(event.detail.direction, 'left');
+            assert.equal(event.detail.prevContent, 'initial content');
+            assert.equal(event.detail.currContent, 'Left and firing');
+            done();
+          });
+          
+          myEl.spinLeft("Left and firing");
+        });
+        
+        test("spins right and waits for 'spin-complete' event to be fired", function(done) {
+
+          myEl.addEventListener('spin-complete', function(event) {
+            assert.equal(event.detail.direction, 'right');
+            assert.equal(event.detail.prevContent, 'initial content');
+            assert.equal(event.detail.currContent, 'Right and firing');
+            done();
+          });
+          
+          myEl.spinRight("Right and firing");
+        });
+
+        test("spins left and interrupts spin by calling spinLeft() while animation is not finished", function(done) {
+
+          myEl.addEventListener('spin-complete', function(event) {
+            assert.equal(event.detail.direction, 'left');
+            assert.equal(event.detail.prevContent, 'Left and firing');
+            assert.equal(event.detail.currContent, 'Again left');
+            done();
+          });
+          
+          myEl.spinLeft("Left and firing");
+          setTimeout(function(){
+            myEl.spinLeft("Again left");
+          },100);
+        });
+
+        test("spins right and interrupts spin by calling spinRight() while animation is not finished", function(done) {
+          myEl.addEventListener('spin-complete', function(event) {
+            assert.equal(event.detail.direction, 'right');
+            assert.equal(event.detail.prevContent, 'Right and firing');
+            assert.equal(event.detail.currContent, 'Again right');
+            done();
+          });
+          
+          myEl.spinRight("Right and firing");
+          setTimeout(function(){
+            myEl.spinRight("Again right");
+          },100);
+        });
+
+      });
+    </script>
+
+  </body>
+</html>
