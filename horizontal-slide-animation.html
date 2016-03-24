@@ -1,0 +1,97 @@
+<!--
+@license
+Copyright (c) 2016 Dejan Stefanovic - Code-RS.com
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../neon-animation/neon-animation-behavior.html">
+<link rel="import" href="../neon-animation/web-animations.html">
+
+<!--
+`<horizontal-slide-animation>` Four types of animation - entering from left or right with fade-in, 
+exiting to left or right with fade-out.
+
+Configuration:
+```
+{
+  name: 'horizontal-slide-animation',
+  node: <node>,
+  transformOrigin: <transform-origin>,
+  timing: <animation-timing>,
+  slide:'entry-from-left'|'entry-from-right'|'exit-to-left'|'exit-to-right' 
+}
+```
+-->
+
+<script>
+
+  Polymer({
+
+    is: 'horizontal-slide-animation', 
+
+    behaviors: [
+      Polymer.NeonAnimationBehavior
+    ],
+
+    configure: function(config) {
+      var node = config.node;
+
+      if (config.transformOrigin) {
+        this.setPrefixedProperty(node, 'transformOrigin', config.transformOrigin);
+      }
+
+      // Default - exit to right
+      var xTransFrom = "0";
+      var xTransTo = "150%";
+      // fade - out
+      var opaFrom = 1;
+      var opaTo = 1;
+      if (config.slide) {
+        switch (config.slide) {
+          case "entry-from-right": 
+            xTransFrom = "150%";
+            xTransTo = "0";
+            opaFrom = 0;
+            opaTo = 1;
+          
+          break;
+          case "entry-from-left": 
+            xTransFrom = "-150%";
+            xTransTo = "0";
+            opaFrom = 0;
+            opaTo = 1;
+          
+          break;
+
+          case "exit-to-left": 
+            xTransFrom = "0";
+            xTransTo = "-150%";
+            opaFrom = 1;
+            opaTo = 0;
+         
+          break;
+          default:
+
+          break;
+        }
+      }
+
+      // Remove the offsets to have the keyframes evenly
+      // distributed over the life of the animation
+      this._effect = new KeyframeEffect(node, [
+        {'transform': 'translateX('+xTransFrom+')', 'opacity': opaFrom},
+        {'transform': 'translateX('+xTransTo+')', 'opacity': opaTo}
+
+      ], this.timingFromConfig(config));
+
+      return this._effect;
+    }
+
+  });
+
+</script>
