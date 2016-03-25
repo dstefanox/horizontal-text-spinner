@@ -170,6 +170,7 @@ Custom property | Description | Default
       _spinIt:function(newText, direction) {
         if (this.animating) {
           this.content = this.next;
+          this.cancelAnimation();
         }
         this.next = newText;
         this.direction = direction;

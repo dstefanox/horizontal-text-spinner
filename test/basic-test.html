@@ -25,7 +25,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <!-- You can use the document as a place to set up your fixtures. -->
     <test-fixture id="fixture-1">
       <template>
-        <horizontal-text-spinner class="spstyle" content="initial content"></horizontal-text-spinner>
+        <horizontal-text-spinner content="initial content"></horizontal-text-spinner>
       </template>
     </test-fixture>
 
@@ -82,14 +82,32 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           myEl.spinRight("Right and firing");
         });
 
+        test("spins right and interrupts spin by calling spinRight() while animation is not finished", function(done) {
+          var listener = function(event) {
+            myEl.removeEventListener('spin-complete',listener);
+            assert.equal(event.detail.direction, 'right');
+            assert.equal(event.detail.prevContent, 'Right and firing');
+            assert.equal(event.detail.currContent, 'Again right');
+            done();
+          };
+          myEl.addEventListener('spin-complete',listener);
+          
+          myEl.spinRight("Right and firing");
+          setTimeout(function(){
+            myEl.spinRight("Again right");
+          },100);
+        });
+
         test("spins left and interrupts spin by calling spinLeft() while animation is not finished", function(done) {
 
-          myEl.addEventListener('spin-complete', function(event) {
+          var listener = function(event) {
+            myEl.removeEventListener('spin-complete',listener);
             assert.equal(event.detail.direction, 'left');
             assert.equal(event.detail.prevContent, 'Left and firing');
             assert.equal(event.detail.currContent, 'Again left');
             done();
-          });
+          };
+          myEl.addEventListener('spin-complete', listener);
           
           myEl.spinLeft("Left and firing");
           setTimeout(function(){
@@ -97,19 +115,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           },100);
         });
 
-        test("spins right and interrupts spin by calling spinRight() while animation is not finished", function(done) {
-          myEl.addEventListener('spin-complete', function(event) {
-            assert.equal(event.detail.direction, 'right');
-            assert.equal(event.detail.prevContent, 'Right and firing');
-            assert.equal(event.detail.currContent, 'Again right');
-            done();
-          });
-          
-          myEl.spinRight("Right and firing");
-          setTimeout(function(){
-            myEl.spinRight("Again right");
-          },100);
-        });
 
       });
     </script>
