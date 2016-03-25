@@ -93,12 +93,21 @@ Custom property | Description | Default
 
       properties: {
         /**
-         * Text that appears in the element
+         * Text that stands in the element.
          */
         content: {
           type: String,
           value: '',
           notify: true
+        },
+        /**
+         * Text that enters into the element.
+         */
+        next: {
+          type: String,
+          value: '',
+          notify: true,
+          reflectToAttribute:false
         },
 
         animationConfig: {
