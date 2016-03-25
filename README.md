@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/dstefanox/horizontal-text-spinner.svg?branch=master)](https://travis-ci.org/dstefanox/horizontal-text-spinner)
+
 # horizontal-text-spinner
 
 An element which shows text which slides-in from the left or the right and gets out of the area by slidding-out to the left or to the right.
